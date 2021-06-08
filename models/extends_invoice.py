@@ -13,26 +13,33 @@ class ExtendsAccountInvoice(models.Model):
 	@api.one
 	def _compute_json_qr(self):
 		if self.type in ['out_invoice','out_refund'] and self.state in ['open','paid'] and self.afip_auth_code != '':
-			try:
-				dict_invoice = {
-					"ver": 1,
-					"fecha": str(self.invoice_date),
-					"cuit": int(self.company_id.main_id_number),
-					"ptoVta": self.journal_id.point_of_sale_number,
-					"tipoCmp": int(self.journal_document_type_id.document_type_id.code),
-					"nroCmp": int(self.name.split('-')[2]),
-					"importe": self.amount_total,
-					"moneda": self.currency_id.afip_code,
-					"ctz": self.currency_id.rate,
-					"tipoDocRec": int(self.partner_id.main_id_category_id.afip_code),
-					"nroDocRec": int(self.partner_id.main_id_number),
-					"tipoCodAut": 'E',
-					"codAut": self.afip_auth_code,
-				}
-				print("DICT_INVOICE:: ", dict_invoice)
-			except:
-				dict_invoice = 'ERROR'
-				pass
+			# try:
+			# tipoCmp = 0
+			# if len(self.journal_document_type_id) > 0:
+			# 	tipoCmp = int(self.journal_document_type_id.document_type_id.code)
+			# nroCmp = 0
+			# number = self.number.split('-')
+			# if len(number) >= 2:
+			# 	nroCmp = int(number[2])
+			dict_invoice = {
+				"ver": 1,
+				"fecha": str(self.date_invoice),
+				"cuit": int(self.company_id.main_id_number),
+				"ptoVta": self.journal_id.point_of_sale_number,
+				"tipoCmp": int(self.journal_document_type_id.document_type_id.code),
+				"nroCmp": self.number.split('-')[2],
+				"importe": self.amount_total,
+				"moneda": self.currency_id.afip_code,
+				"ctz": self.currency_id.rate,
+				"tipoDocRec": int(self.partner_id.main_id_category_id.afip_code),
+				"nroDocRec": int(self.partner_id.main_id_number),
+				"tipoCodAut": 'E',
+				"codAut": self.afip_auth_code,
+			}
+			print("DICT_INVOICE:: ", dict_invoice)
+			# except:
+				# dict_invoice = 'ERROR'
+				# pass
 			res = str(dict_invoice).replace("\n", "")
 		else:
 			res = 'N/A'
@@ -43,3 +50,4 @@ class ExtendsAccountInvoice(models.Model):
 			self.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?p=' + str(b64)
 		else:
 			self.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?ERROR'
+		print("texto_modificado_qr:: ", self.texto_modificado_qr)
