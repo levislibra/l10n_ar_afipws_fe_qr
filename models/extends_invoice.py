@@ -56,7 +56,7 @@ class ExtendsAccountInvoice(models.Model):
 		# input_data = "https://towardsdatascience.com/face-detection-in-10-lines-for-beginners-1787aa1d9127"
 		#Creating an instance of qrcode
 		qr = qrcode.QRCode(
-			version=10,
+			version=1,
 			box_size=2,
 			border=1)
 		qr.add_data(self.texto_modificado_qr)
