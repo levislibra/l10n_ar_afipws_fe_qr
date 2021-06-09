@@ -25,6 +25,7 @@
     'data': [
         # 'security/ir.model.access.csv',
         'views/extends_invoice.xml',
+				'views/invoice_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
