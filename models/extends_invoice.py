@@ -25,12 +25,12 @@ class ExtendsAccountInvoice(models.Model):
 				"tipoCmp": int(self.journal_document_type_id.document_type_id.code),
 				"nroCmp": self.invoice_number,
 				"importe": self.amount_total,
-				"moneda": self.currency_id.afip_code,
+				"moneda": str(self.currency_id.afip_code),
 				"ctz": self.currency_id.rate,
 				"tipoDocRec": int(self.partner_id.main_id_category_id.afip_code),
 				"nroDocRec": int(self.partner_id.main_id_number),
 				"tipoCodAut": 'E',
-				"codAut": self.afip_auth_code,
+				"codAut": int(self.afip_auth_code),
 			}
 			res = str(dict_invoice).replace("\n", "")
 			res = res.replace(" ", "")
