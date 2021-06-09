@@ -32,11 +32,9 @@ class ExtendsAccountInvoice(models.Model):
 				"tipoCodAut": 'E',
 				"codAut": self.afip_auth_code,
 			}
-			print("DICT_INVOICE:: ", dict_invoice)
-			# except:
-				# dict_invoice = 'ERROR'
-				# pass
 			res = str(dict_invoice).replace("\n", "")
+			res = res.replace(" ", "")
+			print("RES:: ", res)
 		else:
 			dict_invoice = 'ERROR'
 			res = 'N/A'
