@@ -24,7 +24,7 @@ class ExtendsAccountInvoice(models.Model):
 				"ptoVta": self.journal_id.point_of_sale_number,
 				"tipoCmp": int(self.journal_document_type_id.document_type_id.code),
 				"nroCmp": self.invoice_number,
-				"importe": float('%.2f' % self.amount_total),
+				"importe": self.amount_total,
 				"moneda": str(self.currency_id.afip_code),
 				"ctz": self.currency_id.rate,
 				"tipoDocRec": int(self.partner_id.main_id_category_id.afip_code),
@@ -55,15 +55,19 @@ class ExtendsAccountInvoice(models.Model):
 		# Link for website
 		# input_data = "https://towardsdatascience.com/face-detection-in-10-lines-for-beginners-1787aa1d9127"
 		#Creating an instance of qrcode
-		qr = qrcode.QRCode(
-			version=1,
-			box_size=10,
-			border=1)
-		qr.add_data(self.texto_modificado_qr)
-		qr.make()
-		img = qr.make_image()
-		maxsize = (115, 115)
-		img.thumbnail(maxsize, Image.ANTIALIAS)
+		# qr = qrcode.QRCode(
+		# 	version=1,
+		# 	box_size=10,
+		# 	border=1)
+		# qr.add_data(self.texto_modificado_qr)
+		# qr.make(self.texto_modificado_qr)
+		# img = qr.make_image()
+
+		img = qrcode.make(self.texto_modificado_qr)
+
+		# maxsize = (115, 115)
+		# img.thumbnail(maxsize, Image.ANTIALIAS)
+
 		buffered = BytesIO()
 		img.save(buffered, format="JPEG")
 		img_str = base64.b64encode(buffered.getvalue())
