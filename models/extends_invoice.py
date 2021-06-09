@@ -40,8 +40,11 @@ class ExtendsAccountInvoice(models.Model):
 			res = 'N/A'
 		self.json_qr = res
 		if type(dict_invoice) == dict:
+			print("res 2: ",res)
 			enc = res.encode()
 			b64 = base64.encodestring(enc)
+			print("b64:: ", b64)
+			b64 = b64.replace(' ', '')
 			self.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?p=' + str(b64)
 		else:
 			self.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?ERROR'
@@ -53,9 +56,9 @@ class ExtendsAccountInvoice(models.Model):
 		# input_data = "https://towardsdatascience.com/face-detection-in-10-lines-for-beginners-1787aa1d9127"
 		#Creating an instance of qrcode
 		qr = qrcode.QRCode(
-						version=2,
-						box_size=2,
-						border=1)
+			version=10,
+			box_size=2,
+			border=1)
 		qr.add_data(self.texto_modificado_qr)
 		qr.make()
 		img = qr.make_image()
