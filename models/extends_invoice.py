@@ -44,7 +44,7 @@ class ExtendsAccountInvoice(models.Model):
 			enc = res.encode()
 			b64 = base64.encodestring(enc)
 			print("b64:: ", b64)
-			b64 = b64.replace(' ', '')
+			b64 = b64.replace('\n', '')
 			self.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?p=' + str(b64)
 		else:
 			self.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?ERROR'
