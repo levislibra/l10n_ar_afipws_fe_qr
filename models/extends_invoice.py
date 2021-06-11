@@ -6,7 +6,7 @@ import base64
 import qrcode
 from io import BytesIO
 from PIL import Image
-from typing_extensions import OrderedDict
+from collections import OrderedDict
 
 class ExtendsAccountInvoice(models.Model):
 	_inherit = "account.invoice"
