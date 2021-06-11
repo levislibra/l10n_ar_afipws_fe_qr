@@ -7,6 +7,7 @@ import qrcode
 from io import BytesIO
 from PIL import Image
 from collections import OrderedDict
+from datetime import datetime
 
 class ExtendsAccountInvoice(models.Model):
 	_inherit = "account.invoice"
@@ -33,7 +34,7 @@ class ExtendsAccountInvoice(models.Model):
 			# dict_invoice["nroDocRec"] = int(self.partner_id.main_id_number)
 			# dict_invoice["tipoCodAut"] = 'E'
 			# dict_invoice["codAut"] = int(self.afip_auth_code)
-
+			fecha = datetime.strptime(self.fecha_tope_rendicion, "%Y-%m-%d")
 			dict_invoice = """{
 				"ver": 1,
 				"fecha": "%s",
@@ -48,7 +49,7 @@ class ExtendsAccountInvoice(models.Model):
 				"nroDocRec": %s,
 				"tipoCodAut": "E",
 				"codAut": %s
-			}"""%(str(self.date_invoice), str(self.company_id.main_id_number),self.journal_id.point_of_sale_number,str(self.journal_document_type_id.document_type_id.code), str(self.invoice_number), str(self.amount_total), str(self.currency_id.afip_code), str(self.currency_id.rate), str(self.partner_id.main_id_category_id.afip_code), str(self.partner_id.main_id_number),str(self.afip_auth_code))
+			}"""%(str(fecha), str(self.company_id.main_id_number),self.journal_id.point_of_sale_number,str(self.journal_document_type_id.document_type_id.code), str(self.invoice_number), str(self.amount_total), str(self.currency_id.afip_code), str(self.currency_id.rate), str(self.partner_id.main_id_category_id.afip_code), str(self.partner_id.main_id_number),str(self.afip_auth_code))
 			res = str(dict_invoice).replace("\n", "").replace("\t", "").replace(" ", "")
 			print("RES:: ", res)
 		else:
