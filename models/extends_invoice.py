@@ -36,7 +36,7 @@ class ExtendsAccountInvoice(models.Model):
 			# dict_invoice["codAut"] = int(self.afip_auth_code)
 			fecha = datetime.strptime(self.date_invoice, "%Y-%m-%d")
 			print("fecha.date: ", fecha.date)
-			fecha = str(fecha.year)+'-'+str(fecha.month)+'-'+str(fecha.day)
+			fecha = str(fecha.year)+'-'+str(fecha.month).zfill(2)+'-'+str(fecha.day).zfill(2)
 			print("puta fecha: ", fecha)
 			dict_invoice = """{
 				"ver": 1,
@@ -59,16 +59,15 @@ class ExtendsAccountInvoice(models.Model):
 			dict_invoice = 'ERROR'
 			res = 'N/A'
 		self.json_qr = res
-		if type(dict_invoice) == dict:
-			print("res 2: ",res)
-			b64 = res.encode('base64','strict')
-			# enc = res.encode()
-			# b64 = base64.encodestring(enc)
-			print("b64:: ", b64)
-			b64 = b64.replace('\n', '')
-			self.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?p=' + str(b64)
-		else:
-			self.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?ERROR'
+		# if type(dict_invoice) == dict:
+		b64 = res.encode('base64','strict')
+		# enc = res.encode()
+		# b64 = base64.encodestring(enc)
+		print("b64:: ", b64)
+		b64 = b64.replace('\n', '')
+		self.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?p=' + str(b64)
+		# else:
+			# self.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?ERROR'
 
 
 	@api.one
