@@ -34,7 +34,7 @@ class ExtendsAccountInvoice(models.Model):
 			# dict_invoice["nroDocRec"] = int(self.partner_id.main_id_number)
 			# dict_invoice["tipoCodAut"] = 'E'
 			# dict_invoice["codAut"] = int(self.afip_auth_code)
-			fecha = datetime.strptime(self.fecha_tope_rendicion, "%Y-%m-%d")
+			fecha = datetime.strptime(self.date_invoice, "%Y-%m-%d")
 			dict_invoice = """{
 				"ver": 1,
 				"fecha": "%s",
