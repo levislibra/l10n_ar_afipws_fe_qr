@@ -18,38 +18,38 @@ class ExtendsAccountInvoice(models.Model):
 	@api.one
 	def _compute_json_qr(self):
 		print("_compute_json_qr")
-		if self.type in ['out_invoice','out_refund'] and self.state in ['open','paid'] and self.afip_auth_code != False:
-			dict_invoice = OrderedDict()
-			dict_invoice["ver"] = 1
-			dict_invoice["fecha"]= str(self.date_invoice)
-			dict_invoice["cuit"] = int(self.company_id.main_id_number)
-			dict_invoice["ptoVta"] = self.journal_id.point_of_sale_number
-			dict_invoice["tipoCmp"] = int(self.journal_document_type_id.document_type_id.code)
-			dict_invoice["nroCmp"] = self.invoice_number
-			dict_invoice["importe"] = self.amount_total
-			dict_invoice["moneda"] = str(self.currency_id.afip_code)
-			dict_invoice["ctz"] = self.currency_id.rate
-			dict_invoice["tipoDocRec"] = int(self.partner_id.main_id_category_id.afip_code)
-			dict_invoice["nroDocRec"] = int(self.partner_id.main_id_number)
-			dict_invoice["tipoCodAut"] = 'E'
-			dict_invoice["codAut"] = int(self.afip_auth_code)
-			# dict_invoice = OrderedDict({
-			# 	"ver": 1,
-			# 	"fecha": str(self.date_invoice),
-			# 	"cuit": int(self.company_id.main_id_number),
-			# 	"ptoVta": self.journal_id.point_of_sale_number,
-			# 	"tipoCmp": int(self.journal_document_type_id.document_type_id.code),
-			# 	"nroCmp": self.invoice_number,
-			# 	"importe": self.amount_total,
-			# 	"moneda": str(self.currency_id.afip_code),
-			# 	"ctz": self.currency_id.rate,
-			# 	"tipoDocRec": int(self.partner_id.main_id_category_id.afip_code),
-			# 	"nroDocRec": int(self.partner_id.main_id_number),
-			# 	"tipoCodAut": 'E',
-			# 	"codAut": int(self.afip_auth_code),
-			# })
-			res = str(dict_invoice).replace("\n", "")
-			res = res.replace(" ", "")
+		if True or (self.type in ['out_invoice','out_refund'] and self.state in ['open','paid'] and self.afip_auth_code != False):
+			# dict_invoice = OrderedDict()
+			# dict_invoice["ver"] = 1
+			# dict_invoice["fecha"]= str(self.date_invoice)
+			# dict_invoice["cuit"] = int(self.company_id.main_id_number)
+			# dict_invoice["ptoVta"] = self.journal_id.point_of_sale_number
+			# dict_invoice["tipoCmp"] = int(self.journal_document_type_id.document_type_id.code)
+			# dict_invoice["nroCmp"] = self.invoice_number
+			# dict_invoice["importe"] = self.amount_total
+			# dict_invoice["moneda"] = str(self.currency_id.afip_code)
+			# dict_invoice["ctz"] = self.currency_id.rate
+			# dict_invoice["tipoDocRec"] = int(self.partner_id.main_id_category_id.afip_code)
+			# dict_invoice["nroDocRec"] = int(self.partner_id.main_id_number)
+			# dict_invoice["tipoCodAut"] = 'E'
+			# dict_invoice["codAut"] = int(self.afip_auth_code)
+
+			dict_invoice = """{
+				"ver": 1,
+				"fecha": "%s",
+				"cuit": %s,
+				"ptoVta": %s,
+				"tipoCmp": %s,
+				"nroCmp": %s,
+				"importe": %s,
+				"moneda": "%s",
+				"ctz": %s,
+				"tipoDocRec": %s,
+				"nroDocRec": %s,
+				"tipoCodAut": "E",
+				"codAut": %s
+			}"""%(str(self.date_invoice), str(self.company_id.main_id_number),self.journal_id.point_of_sale_number,str(self.journal_document_type_id.document_type_id.code), str(self.invoice_number), str(self.amount_total), str(self.currency_id.afip_code), str(self.currency_id.rate), str(self.partner_id.main_id_category_id.afip_code), str(self.partner_id.main_id_number),str(self.afip_auth_code))
+			res = str(dict_invoice).replace("\n", "").replace("\t", "").replace(" ", "")
 			print("RES:: ", res)
 		else:
 			dict_invoice = 'ERROR'
