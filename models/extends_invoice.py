@@ -65,8 +65,8 @@ class ExtendsAccountInvoice(models.Model):
 
 		img = qrcode.make(self.texto_modificado_qr)
 
-		# maxsize = (115, 115)
-		# img.thumbnail(maxsize, Image.ANTIALIAS)
+		maxsize = (150, 150)
+		img.thumbnail(maxsize, Image.ANTIALIAS)
 
 		buffered = BytesIO()
 		img.save(buffered, format="JPEG")
