@@ -35,6 +35,9 @@ class ExtendsAccountInvoice(models.Model):
 			# dict_invoice["tipoCodAut"] = 'E'
 			# dict_invoice["codAut"] = int(self.afip_auth_code)
 			fecha = datetime.strptime(self.date_invoice, "%Y-%m-%d")
+			fecha = fecha.year+'-'+fecha.month+'-'+fecha.day
+			print("puta fecha: ", fecha)
+			print("fecha.date: ", fecha.date)
 			dict_invoice = """{
 				"ver": 1,
 				"fecha": "%s",
