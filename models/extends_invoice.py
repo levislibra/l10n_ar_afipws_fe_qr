@@ -6,6 +6,7 @@ import base64
 import qrcode
 from io import BytesIO
 from PIL import Image
+from typing_extensions import OrderedDict
 
 class ExtendsAccountInvoice(models.Model):
 	_inherit = "account.invoice"
@@ -16,8 +17,9 @@ class ExtendsAccountInvoice(models.Model):
 
 	@api.one
 	def _compute_json_qr(self):
+		print("_compute_json_qr")
 		if self.type in ['out_invoice','out_refund'] and self.state in ['open','paid'] and self.afip_auth_code != False:
-			dict_invoice = {
+			dict_invoice = OrderedDict({
 				"ver": 1,
 				"fecha": str(self.date_invoice),
 				"cuit": int(self.company_id.main_id_number),
@@ -31,7 +33,7 @@ class ExtendsAccountInvoice(models.Model):
 				"nroDocRec": int(self.partner_id.main_id_number),
 				"tipoCodAut": 'E',
 				"codAut": int(self.afip_auth_code),
-			}
+			})
 			res = str(dict_invoice).replace("\n", "")
 			res = res.replace(" ", "")
 			print("RES:: ", res)
@@ -41,8 +43,9 @@ class ExtendsAccountInvoice(models.Model):
 		self.json_qr = res
 		if type(dict_invoice) == dict:
 			print("res 2: ",res)
-			enc = res.encode()
-			b64 = base64.encodestring(enc)
+			b64 = res.encode('base64','strict')
+			# enc = res.encode()
+			# b64 = base64.encodestring(enc)
 			print("b64:: ", b64)
 			b64 = b64.replace('\n', '')
 			self.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?p=' + str(b64)
