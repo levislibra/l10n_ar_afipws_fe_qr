@@ -6,8 +6,6 @@ import base64
 import qrcode
 from io import BytesIO
 from PIL import Image
-from collections import OrderedDict
-from datetime import datetime
 
 class ExtendsAccountInvoice(models.Model):
 	_inherit = "account.invoice"
@@ -19,55 +17,38 @@ class ExtendsAccountInvoice(models.Model):
 	@api.one
 	def _compute_json_qr(self):
 		print("_compute_json_qr")
-		if True or (self.type in ['out_invoice','out_refund'] and self.state in ['open','paid'] and self.afip_auth_code != False):
-			# dict_invoice = OrderedDict()
-			# dict_invoice["ver"] = 1
-			# dict_invoice["fecha"]= str(self.date_invoice)
-			# dict_invoice["cuit"] = int(self.company_id.main_id_number)
-			# dict_invoice["ptoVta"] = self.journal_id.point_of_sale_number
-			# dict_invoice["tipoCmp"] = int(self.journal_document_type_id.document_type_id.code)
-			# dict_invoice["nroCmp"] = self.invoice_number
-			# dict_invoice["importe"] = self.amount_total
-			# dict_invoice["moneda"] = str(self.currency_id.afip_code)
-			# dict_invoice["ctz"] = self.currency_id.rate
-			# dict_invoice["tipoDocRec"] = int(self.partner_id.main_id_category_id.afip_code)
-			# dict_invoice["nroDocRec"] = int(self.partner_id.main_id_number)
-			# dict_invoice["tipoCodAut"] = 'E'
-			# dict_invoice["codAut"] = int(self.afip_auth_code)
-			fecha = datetime.strptime(self.date_invoice, "%Y-%m-%d")
-			print("fecha.date: ", fecha.date)
-			fecha = str(fecha.year)+'-'+str(fecha.month).zfill(2)+'-'+str(fecha.day).zfill(2)
-			print("puta fecha: ", fecha)
-			dict_invoice = """{
+		if self.type in ['out_invoice','out_refund'] and self.state in ['open','paid'] and self.afip_auth_code != False:
+			dict_invoice = {
 				"ver": 1,
-				"fecha": "%s",
-				"cuit": %s,
-				"ptoVta": %s,
-				"tipoCmp": %s,
-				"nroCmp": %s,
-				"importe": %s,
-				"moneda": "%s",
-				"ctz": %s,
-				"tipoDocRec": %s,
-				"nroDocRec": %s,
-				"tipoCodAut": "E",
-				"codAut": %s
-			}"""%(str(fecha), str(self.company_id.main_id_number),self.journal_id.point_of_sale_number,str(self.journal_document_type_id.document_type_id.code), str(self.invoice_number), str(self.amount_total), str(self.currency_id.afip_code), str(self.currency_id.rate), str(self.partner_id.main_id_category_id.afip_code), str(self.partner_id.main_id_number),str(self.afip_auth_code))
-			res = str(dict_invoice).replace("\n", "").replace("\t", "").replace(" ", "")
+				"fecha": str(self.date_invoice),
+				"cuit": int(self.company_id.main_id_number),
+				"ptoVta": self.journal_id.point_of_sale_number,
+				"tipoCmp": int(self.journal_document_type_id.document_type_id.code),
+				"nroCmp": self.invoice_number,
+				"importe": self.amount_total,
+				"moneda": str(self.currency_id.afip_code),
+				"ctz": self.currency_id.rate,
+				"tipoDocRec": int(self.partner_id.main_id_category_id.afip_code),
+				"nroDocRec": int(self.partner_id.main_id_number),
+				"tipoCodAut": 'E',
+				"codAut": int(self.afip_auth_code),
+			}
+			res = str(dict_invoice).replace("\n", "")
+			res = res.replace(" ", "")
 			print("RES:: ", res)
 		else:
 			dict_invoice = 'ERROR'
 			res = 'N/A'
 		self.json_qr = res
-		# if type(dict_invoice) == dict:
-		b64 = res.encode('base64','strict')
-		# enc = res.encode()
-		# b64 = base64.encodestring(enc)
-		print("b64:: ", b64)
-		b64 = b64.replace('\n', '')
-		self.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?p=' + str(b64)
-		# else:
-			# self.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?ERROR'
+		if type(dict_invoice) == dict:
+			print("res 2: ",res)
+			enc = res.encode()
+			b64 = base64.encodestring(enc)
+			print("b64:: ", b64)
+			b64 = b64.replace('\n', '')
+			self.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?p=' + str(b64)
+		else:
+			self.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?ERROR'
 
 
 	@api.one
@@ -75,17 +56,17 @@ class ExtendsAccountInvoice(models.Model):
 		# Link for website
 		# input_data = "https://towardsdatascience.com/face-detection-in-10-lines-for-beginners-1787aa1d9127"
 		#Creating an instance of qrcode
-		# qr = qrcode.QRCode(
-		# 	version=1,
-		# 	box_size=10,
-		# 	border=1)
-		# qr.add_data(self.texto_modificado_qr)
-		# qr.make(self.texto_modificado_qr)
-		# img = qr.make_image()
+		qr = qrcode.QRCode(
+			version=1,
+			box_size=2,
+			border=0)
+		qr.add_data(self.texto_modificado_qr)
+		qr.make(self.texto_modificado_qr)
+		img = qr.make_image()
 
-		img = qrcode.make(self.texto_modificado_qr)
+		# img = qrcode.make(self.texto_modificado_qr)
 
-		maxsize = (150, 150)
+		maxsize = (120, 120)
 		img.thumbnail(maxsize, Image.ANTIALIAS)
 
 		buffered = BytesIO()
