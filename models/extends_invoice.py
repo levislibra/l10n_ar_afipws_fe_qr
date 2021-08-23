@@ -53,37 +53,40 @@ class ExtendsAccountInvoice(models.Model):
 	@api.one
 	def _compute_qr(self):
 		#Creating an instance of qrcode
-		# qr = qrcode.QRCode(
-		# 	version=1,
-		# 	box_size=2,
-		# 	border=1)
-		# qr.add_data(self.texto_modificado_qr)
-		# qr.make(self.texto_modificado_qr, image_factory=PymagingImage)
-		# img = qr.make_image()
-		# print("img:: ", img)
-		# img = qrcode.make(self.texto_modificado_qr)
-
-		# maxsize = (115, 115)
-		# img.thumbnail(maxsize, Image.ANTIALIAS)
-
-		# buffered = BytesIO()
-		# img.save(buffered, format="JPEG")
-		# img_str = base64.b64encode(buffered.getvalue())
+		# VERSION 1
 		qr = qrcode.QRCode(
 			version=1,
-			error_correction=qrcode.constants.ERROR_CORRECT_H,
-			box_size=4,
-			border=4,
-		)
-
+			box_size=10,
+			border=4)
 		qr.add_data(self.texto_modificado_qr)
 		qr.make(fit=True)
 		img = qr.make_image()
 		print("img:: ", img)
-		img = img.resize((115, 115), Image.NEAREST)
+		img = qrcode.make(self.texto_modificado_qr)
+
+		maxsize = (115, 115)
+		img.thumbnail(maxsize, Image.ANTIALIAS)
 
 		buffered = BytesIO()
-		img.save(buffered, format="PNG")
-		print("img:: ", img)
-		img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+		img.save(buffered, format="JPEG")
+		img_str = base64.b64encode(buffered.getvalue())
+
+		# VERSION 2
+		# qr = qrcode.QRCode(
+		# 	version=1,
+		# 	error_correction=qrcode.constants.ERROR_CORRECT_H,
+		# 	box_size=4,
+		# 	border=4,
+		# )
+
+		# qr.add_data(self.texto_modificado_qr)
+		# qr.make(fit=True)
+		# img = qr.make_image()
+		# print("img:: ", img)
+		# img = img.resize((115, 115), Image.NEAREST)
+
+		# buffered = BytesIO()
+		# img.save(buffered, format="PNG")
+		# print("img:: ", img)
+		# img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
 		self.qr = img_str
