@@ -58,6 +58,7 @@ class ExtendsAccountInvoice(models.Model):
 		type(img)  # qrcode.image.pil.PilImage
 		buffered = BytesIO()
 		img.save(buffered, format="PNG")
+		img.resize((128, 128), Image.NEAREST)
 		img_str = base64.b64encode(buffered.getvalue())
 
 		# VERSION 1
