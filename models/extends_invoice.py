@@ -53,23 +53,30 @@ class ExtendsAccountInvoice(models.Model):
 	@api.one
 	def _compute_qr(self):
 		#Creating an instance of qrcode
-		# VERSION 1
-		qr = qrcode.QRCode(
-			version=1,
-			box_size=10,
-			border=4)
-		qr.add_data(self.texto_modificado_qr)
-		qr.make(fit=True)
-		img = qr.make_image()
-		print("img:: ", img)
+		# VERSION 0
 		img = qrcode.make(self.texto_modificado_qr)
-
-		maxsize = (115, 115)
-		img.thumbnail(maxsize, Image.ANTIALIAS)
-
+		type(img)  # qrcode.image.pil.PilImage
 		buffered = BytesIO()
-		img.save(buffered, format="JPEG")
+		img.save(buffered, format="PNG")
 		img_str = base64.b64encode(buffered.getvalue())
+
+		# VERSION 1
+		# qr = qrcode.QRCode(
+		# 	version=1,
+		# 	box_size=10,
+		# 	border=4)
+		# qr.add_data(self.texto_modificado_qr)
+		# qr.make(fit=True)
+		# img = qr.make_image()
+		# print("img:: ", img)
+		# img = qrcode.make(self.texto_modificado_qr)
+
+		# maxsize = (115, 115)
+		# img.thumbnail(maxsize, Image.ANTIALIAS)
+
+		# buffered = BytesIO()
+		# img.save(buffered, format="JPEG")
+		# img_str = base64.b64encode(buffered.getvalue())
 
 		# VERSION 2
 		# qr = qrcode.QRCode(
