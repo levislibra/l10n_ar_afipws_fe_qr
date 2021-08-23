@@ -3,11 +3,11 @@
     <!-- <data noupdate="0"> -->
     <!-- Printed Invoice -->
 		
-		<!-- <record id="l10n_ar_aeroo_einvoice.action_aeroo_report_ar_einvoice" model="ir.actions.report.xml">
+		<record id="l10n_ar_aeroo_einvoice.action_aeroo_report_ar_einvoice" model="ir.actions.report.xml">
 			<field name="report_rml" eval="l10n_ar_afipws_fe_qr/views/einvoice_with_footer.odt"/>
 			<field name="background_image" eval="l10n_ar_afipws_fe_qr/views/einvoice.png"/>
-		</record> -->
-		<!-- <record id="l10n_ar_aeroo_einvoice.action_aeroo_report_ar_einvoice" context="{'no_key_lines':True}" model="ir.actions.report.xml">
+		</record>
+		<record id="l10n_ar_aeroo_einvoice.action_aeroo_report_ar_einvoice" context="{'no_key_lines':True}" model="ir.actions.report.xml">
 				<field name="name">Argentinian Aeroo Electronic Invoice QR</field>
 				<field name="type">ir.actions.report.xml</field>
 				<field name="model">account.invoice</field>
@@ -26,7 +26,7 @@
 				<field name="account_invoice_split_invoice" eval="False"/>
 				<field name="out_format" ref="report_aeroo.report_mimetypes_pdf_odt"/>
 				<field name="download_filename">${o.state in ['proforma', 'proforma2'] and 'PROFORMA' or (o.document_type_id.report_name or 'Comprobante')} ${o.document_number or ''}.pdf</field>
-		</record> -->
+		</record>
 
     <!-- </data> -->
 </openerp>
