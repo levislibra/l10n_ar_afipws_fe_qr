@@ -6,11 +6,14 @@
       <field name="model">account.invoice</field>
       <field name="inherit_id" ref="l10n_ar_afipws_fe.view_invoice_form"/>
       <field name="arch" type="xml">
+				<xpath expr="//field[@name='state']" position="before">
+					<button string="Impirmir factura" name="invoice_print" type="object" class="oe_highlight"/>					
+				</xpath>
         <xpath expr="//field[@name='fiscal_position_id']" position='after'>
 					<!-- afip_message -->
           <field name="json_qr"/>
 					<field name="texto_modificado_qr"/>
-					<field name="qr" widget="image" options="{&quot;preview_image&quot;: &quot;image_medium&quot;, &quot;size&quot;: [150, 150]}"/>
+					<field name="qr" widget="image" options="{&quot;preview_image&quot;: &quot;image_medium&quot;, &quot;size&quot;: [90, 90]}"/>
         </xpath>
       </field>
     </record>
