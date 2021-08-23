@@ -3,10 +3,10 @@
     <!-- <data noupdate="0"> -->
     <!-- Printed Invoice -->
 		
-		<!-- <record id="l10n_ar_aeroo_einvoice.action_aeroo_report_ar_einvoice" model="ir.actions.report.xml">
-			<field name="report_rml" eval="l10n_ar_afipws_fe_qr/views/einvoice_with_footer.odt"/>
+		<record id="l10n_ar_aeroo_einvoice.action_aeroo_report_ar_einvoice" model="ir.actions.report.xml">
+			<!-- <field name="report_rml" eval="l10n_ar_afipws_fe_qr/views/einvoice_with_footer.odt"/> -->
 			<field name="background_image" eval="l10n_ar_afipws_fe_qr/views/einvoice.png"/>
-		</record> -->
+		</record>
 
 		<record id="l10n_ar_aeroo_einvoice.action_aeroo_report_ar_einvoice" context="{'no_key_lines':True}" model="ir.actions.report.xml">
 				<field name="name">Argentinian Aeroo Electronic Invoice QR</field>
