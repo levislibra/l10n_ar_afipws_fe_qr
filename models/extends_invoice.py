@@ -78,10 +78,10 @@ class ExtendsAccountInvoice(models.Model):
 
 	@api.multi
 	def do_pyafipws_request_cae(self):
-		print("*************************************")
-		print("do_pyafipws_request_cae")
-		print("*************************************")
-		"Request to AFIP the invoices' Authorization Electronic Code (CAE)"
+		_logger.info("*************************************")
+		_logger.info("do_pyafipws_request_cae")
+		_logger.info("*************************************")
+		# "Request to AFIP the invoices' Authorization Electronic Code (CAE)"
 		for inv in self:
 			# Ignore invoices with cae (do not check date)
 			if inv.afip_auth_code:
@@ -425,6 +425,8 @@ class ExtendsAccountInvoice(models.Model):
 			# escribe aca si no hay errores
 			_logger.info('CAE solicitado con exito. CAE: %s. Resultado %s' % (
 				ws.CAE, ws.Resultado))
+			_logger.info("Condicion frente al IVA del receptor: %s" % (
+				receptor_condicion_iva))
 			inv.write({
 				'afip_auth_mode': 'CAE',
 				'afip_auth_code': ws.CAE,
