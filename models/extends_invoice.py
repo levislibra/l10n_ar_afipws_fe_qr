@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from operator import inv
-from openerp import models, fields, api
+from openerp import models, fields, api, _
 import json
 import base64
 import qrcode
