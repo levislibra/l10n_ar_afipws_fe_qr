@@ -105,7 +105,7 @@ class ExtendsAccountInvoice(models.Model):
 
 			# authenticate against AFIP:
 			ws = inv.company_id.get_connection(afip_ws).connect()
-
+			
 			if afip_ws == 'wsfex':
 				if not country:
 					raise UserError(_(
@@ -179,9 +179,11 @@ class ExtendsAccountInvoice(models.Model):
 			moneda_ctz = inv.currency_rate
 			# Agregar la condición frente al IVA del receptor
 			receptor_condicion_iva = commercial_partner.afip_responsability_type_id.code
-
+			if not receptor_condicion_iva:
+				raise UserError(_("El cliente no tiene configurada su condición frente al IVA."))
 			# create the invoice internally in the helper
 			if afip_ws == 'wsfe':
+				_logger.warning("Creating invoice on WSFE===============================")
 				ws.CrearFactura(
 					concepto, tipo_doc, nro_doc, doc_afip_code, pos_number,
 					cbt_desde, cbt_hasta, imp_total, imp_tot_conc, imp_neto,
