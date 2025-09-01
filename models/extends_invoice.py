@@ -35,10 +35,8 @@ class ExtendsAccountInvoice(models.Model):
 			move_line_id.date = self.date_invoice
 			move_line_id.date_maturity = self.date_invoice
 	
-	@api.multi
-	def action_bulk_update_date_move(self):
-		for inv in self:
-			inv.update_date_move()
+	def action_update_date_move(self, cr, uid, ids, context=None):
+		self.browse(ids).update_date_move()
 		return True
 
 	@api.one

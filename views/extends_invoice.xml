@@ -19,30 +19,18 @@
             </field>
         </record>
         
-        <!-- Acción de servidor -->
-        <record id="action_bulk_update_invoice_dates" model="ir.actions.server">
-            <field name="name">Actualizar fechas de asiento</field>
-            <field name="model_id" ref="account.model_account_invoice"/>
+        <record id="update_move_date" model="ir.actions.server">
+            <field name="name">Actualizar asientos</field>
+            <field name="model_id" ref="model_account_move"/>
             <field name="state">code</field>
-            <!-- Opción A: llamar al wrapper del modelo -->
-            <field name="code">
-                action = env['account.invoice'].browse(context.get('active_ids', [])).action_bulk_update_date_move()
-            </field>
-            <!--
-            Opción B (directo, si no creás el wrapper):
-            <field name="code">
-            for inv in env['account.invoice'].browse(context.get('active_ids', [])):
-            inv.update_date_move()
-            </field>
-            -->
+            <field name="code">action = self.action_update_date_move(cr, uid, context.get('active_ids', []), context=context)</field>
         </record>
         
-        <!-- En Odoo 9 el binding a la vista lista se hace con ir.values -->
-        <record id="action_bulk_update_invoice_dates_value" model="ir.values">
-            <field name="name">Actualizar fechas de asiento</field>
-            <field name="model_id" ref="account.model_account_invoice"/>
-            <field name="key2">client_action_multi</field>
-            <field name="value" eval="'ir.actions.server,%d' % ref('l10n_ar_afipws_fe_qr.action_bulk_update_invoice_dates')"/>
+        <record id="update_move_date_more_item" model="ir.values">
+            <field eval="'client_action_multi'" name="key2"/>
+            <field eval="'account.move'" name="model"/>
+            <field name="name">Actualizar asientos</field>
+            <field eval="'ir.actions.server,%d'%update_move_date" name="value"/>
         </record>
         
     </data>
