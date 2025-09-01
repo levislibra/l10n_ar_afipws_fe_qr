@@ -42,7 +42,7 @@
             <field name="name">Actualizar fechas de asiento</field>
             <field name="model_id" ref="account.model_account_invoice"/>
             <field name="key2">client_action_multi</field>
-            <field name="value" eval="'ir.actions.server,%d' % ref('your_module_name.action_bulk_update_invoice_dates')"/>
+            <field name="value" eval="'ir.actions.server,%d' % ref('l10n_ar_afipws_fe_qr.action_bulk_update_invoice_dates')"/>
         </record>
         
     </data>
