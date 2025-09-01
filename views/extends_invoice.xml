@@ -21,14 +21,14 @@
         
         <record id="update_move_date" model="ir.actions.server">
             <field name="name">Actualizar asientos</field>
-            <field name="model_id" ref="model_account_move"/>
+            <field name="model_id" ref="model_account_invoice"/>
             <field name="state">code</field>
             <field name="code">action = self.action_update_date_move(cr, uid, context.get('active_ids', []), context=context)</field>
         </record>
         
         <record id="update_move_date_more_item" model="ir.values">
             <field eval="'client_action_multi'" name="key2"/>
-            <field eval="'account.move'" name="model"/>
+            <field eval="'account.invoice'" name="model"/>
             <field name="name">Actualizar asientos</field>
             <field eval="'ir.actions.server,%d'%update_move_date" name="value"/>
         </record>
