@@ -33,6 +33,13 @@ class ExtendsAccountInvoice(models.Model):
 		self.move_id.date = self.date_invoice
 		for move_line_id in self.invoice_line_ids:
 			move_line_id.date = self.date_invoice
+			move_line_id.date_maturity = self.date_invoice
+	
+	@api.multi
+	def action_bulk_update_date_move(self):
+		for inv in self:
+			inv.update_date_move()
+		return True
 
 	@api.one
 	def _compute_json_qr(self):
