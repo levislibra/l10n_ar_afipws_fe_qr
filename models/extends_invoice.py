@@ -39,7 +39,7 @@ class ExtendsAccountInvoice(models.Model):
 		invoices = self.browse(cr, uid, ids, context=context)
 		for inv in invoices:
 			inv.update_date_move()
-		return True
+		return None
 
 	@api.one
 	def _compute_json_qr(self):
