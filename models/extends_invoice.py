@@ -36,7 +36,9 @@ class ExtendsAccountInvoice(models.Model):
 			move_line_id.date_maturity = self.date_invoice
 	
 	def action_update_date_move(self, cr, uid, ids, context=None):
-		self.browse(ids).update_date_move()
+		invoices = self.browse(cr, uid, ids, context=context)
+		for inv in invoices:
+			inv.update_date_move()
 		return True
 
 	@api.one
