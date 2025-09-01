@@ -27,6 +27,12 @@ class ExtendsAccountInvoice(models.Model):
 	json_qr = fields.Char("JSON QR AFIP", compute='_compute_json_qr')
 	texto_modificado_qr = fields.Char('Texto Modificado QR', compute='_compute_json_qr')
 	qr = fields.Binary("QR", compute='_compute_qr')
+	
+	@api.one
+	def update_date_move(self):
+		self.move_id.date = self.date_invoice
+		for move_line_id in self.invoice_line_ids:
+			move_line_id.date = self.date_invoice
 
 	@api.one
 	def _compute_json_qr(self):
