@@ -32,9 +32,9 @@ class ExtendsAccountInvoice(models.Model):
 	def update_date_move(self):
 		self.move_id.date = self.date_invoice
 		self.move_id.date_due = self.date_invoice
-		for move_line_id in self.move_id.line_ids:
-			move_line_id.date = self.date_invoice
-			move_line_id.date_maturity = self.date_invoice
+		# for move_line_id in self.move_id.line_ids:
+		# 	move_line_id.date = self.date_invoice
+		# 	move_line_id.date_maturity = self.date_invoice
 	
 	def action_update_date_move(self, cr, uid, ids, context=None):
 		invoices = self.browse(cr, uid, ids, context=context)
